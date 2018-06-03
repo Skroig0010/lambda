@@ -78,6 +78,14 @@ class Lambda{
 
     function eval2(t : Term) : Term{
         return switch(t){
+            case TmApp(t1, t2) :
+                switch((eval2(t1))){
+                    case TmAbs(t12) : termSubstTop(eval2(t2), t12);
+                    default : throw new NoRuleApplies();
+                }
+            case TmAbs(t) : TmAbs(t);
+            default : throw new NoRuleApplies();
+        }
     }
 
     public function eval(t :Term) : Term{
@@ -102,8 +110,10 @@ class Lambda{
         var lambda = new Lambda();
         var v = new Parser(lambda.input.readLine()).getTerm();
         lambda.printtm(v);
-        lambda.output.writeString("\n");
+        lambda.output.writeString("\n" + "eval : ");
         lambda.printtm(lambda.eval(v));
+        lambda.output.writeString("\n" + "eval_v2 : ");
+        lambda.printtm(lambda.eval_v2(v));
         lambda.output.writeString("\n");
     }
 }
