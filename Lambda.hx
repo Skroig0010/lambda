@@ -23,9 +23,9 @@ class Lambda{
         }
     }
 
+
     function termShift(d : Int, t : Term) : Term{
-        var walk : Int -> Term -> Term = null;
-        walk = function(c : Int, t : Term) : Term{
+        function walk(c : Int, t : Term) : Term{
             return switch(t){
                 case TmVar(i) : if(i >= c) {
                     TmVar(i + d);
@@ -40,8 +40,7 @@ class Lambda{
     }
 
     function termSubst(j, s, t) : Term{
-        var walk : Int -> Term -> Term = null;
-        walk = function(c : Int, t : Term) : Term{
+        function walk(c : Int, t : Term) : Term{
             return switch(t){
                 case TmVar(i) : if(i == j + c) termShift(c, s) else TmVar(i);
                 case TmAbs(x) : TmAbs(walk(c + 1, t));
